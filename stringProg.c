@@ -1,6 +1,6 @@
 #include <stdio.h>
-#define TXT 2
-#define WORD 5
+#define TXT 1024
+#define WORD 30
 #define LEN_ARRAY (TXT+WORD)
 
 char input[LEN_ARRAY];
@@ -35,7 +35,8 @@ int endOfWord(){
 void sameGim(int src, int gim){
     int i=src;
     int sum=0;
-    printf("Gematria Sequences: ")
+    int boll=0;
+    printf("Gematria Sequences: ");
     while(input[i] != '~'){
         int start=i;
         for(i; i<LEN_ARRAY; i++){
@@ -45,15 +46,26 @@ void sameGim(int src, int gim){
         }
         for(start; start<i; start++){
             for(int end=start; end<i; end++){
+                if(input[start]<65 || (input[start]>90 && input[start]<97) || input[start] > 122){
+                    continue;
+                }
+                if(input[end]<65 || (input[end]>90 && input[end]<97) || input[end] > 122){
+                    continue;
+                }
                 sum= gimatria(start, end);
                 if(sum > gim){
                     break;
                 }
                 if(sum == gim){
+                    if(boll == 1){
+                        printf("~");
+                    }
+                    if(boll == 0){
+                        boll = 1;
+                    }
                     for(int j=start; j<=end; j++){
                         printf("%c", input[j]);
                     }
-                    printf('~');
                     break;
                 }
             }
@@ -66,51 +78,59 @@ void sameGim(int src, int gim){
     printf("\n");
 }
 
-char cal_atbash(int char){
+char cal_atbash(int ch){
     char ans;
-    if(char>= 65 && char<= 90){
-        ans= 91- char;
+    if(ch>= 65 && ch<= 90){
+        ans= 91- ch;
         ans+= 64;
     }
-    else if(char>= 97 && char<= 122){
-        ans= 123- char;
+    else if(ch>= 97 && ch<= 122){
+        ans= 123- ch;
         ans+= 96;
      }
     else{
-        ans= char;
+        ans= ch;
     }
    return ans; 
 } 
 
 void atbash(int end, int src){
+    int boll= 0;
     char word[end];
     int i=src;
+    int pointer;
+    printf("Atbash Sequences: ");
     for(int j=0; j<end; j++){
         word[j]= cal_atbash(input[j]);
     }
     while(input[i] != '~'){
         int start=i;
         for(i; i<LEN_ARRAY; i++){
-            if(input[i] == '\n' || input[i] == '\t' || input[i] == '~'){
+            if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
                 break;
             }
         }
         for(start; start<i; start++){
             if(input[start] == word[0]){
                 pointer= 1;
-                for(int sub=start+1; sub<i; sub++){
-                    if(input[sub] == ' '){
+                for(int sub=start+1; sub<LEN_ARRAY; sub++){
+                    if(input[sub] == ' ' || input[sub] == '\n' || input[sub] == '\t'){
                         continue;
                     }
-                    if(input[sub] != word[pointer]){
+                    if(input[sub] != word[pointer] || input[sub] == '~'){
                         break;
                     }
                     pointer++;
                     if(pointer == end){
+                          if(boll == 1){
+                                printf("~");
+                            }
+                            if(boll == 0){
+                                boll = 1;
+                            }
                         for(start; start<=sub; start++){
-                            printf(input[start]);
+                            printf("%c" ,input[start]);
                         }
-                        printf("~");
                         break;
                     }
                 }
@@ -118,7 +138,7 @@ void atbash(int end, int src){
             else if(input[start] == word[end-1]){
                     pointer= end-2;
                 for(int sub=start+1; sub<i; sub++){
-                    if(input[sub] == ' '){
+                    if(input[sub] == ' ' || input[sub] == '\n' || input[sub] == '\t'){
                         continue;
                     }
                     if(input[sub] != word[pointer]){
@@ -126,15 +146,20 @@ void atbash(int end, int src){
                     }
                     pointer--;
                       if(pointer == -1){
-                        for(start; start<=sub; start++){
-                            printf(input[start]);
+                        if(boll == 1){
+                            printf("~");
                         }
-                        printf("~");
+                        if(boll == 0){
+                            boll = 1;
+                        }
+                        for(start; start<=sub; start++){
+                            printf("%c" ,input[start]);
+                        }
                         break;
                     }
                 }
             }
-            else if(input[start] == " "){
+            else if(input[start] == ' '){
                 continue; //ask if need to print the space
             }
         }
@@ -147,10 +172,10 @@ void atbash(int end, int src){
 }
 
 
-void main(){
+int main(){
     char c;
     int i=0;
-    while ( i<(WORD+TXT)){
+    while ( i<(WORD+TXT) && input[i-1] != '~'){
         scanf("%c", &c);
         input[i]= c;
         i++;
@@ -164,5 +189,5 @@ void main(){
     int gim= gimatria(0, index-1);
     sameGim(index+1 , gim);
     atbash(index, index+1);
-
+    return 0;
 }
