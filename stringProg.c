@@ -45,13 +45,16 @@ void sameGim(int src, int gim){
             }
         }
         for(start; start<i; start++){
-            for(int end=start; end<i; end++){
+            for(int end=start; end<LEN_ARRAY; end++){
                 if(input[start]<65 || (input[start]>90 && input[start]<97) || input[start] > 122){
                     continue;
                 }
                 if(input[end]<65 || (input[end]>90 && input[end]<97) || input[end] > 122){
                     continue;
                 }
+                if(input[end] == ' ' || input[end] == '\n' || input[end] == '\t'){
+                        continue;
+                    }
                 sum= gimatria(start, end);
                 if(sum > gim){
                     break;
@@ -171,8 +174,91 @@ void atbash(int end, int src){
     printf("\n");   
 }
 
+void print(int src, int dest, int boll){
+    if(boll == 1){
+        printf("~");
+    }
+    for(int i=src; i<=dest; i++){
+        printf("%c", input[i]);
+    }
+}
 
-int main(){
+// void angram(int end, int src){
+//     char word[end];
+//     int asci_word[128];
+//     int asci_str[128];
+//     int i=src;
+//     int boll= 0;
+//     printf("Anagram Sequences: ");
+//     for(int j=0; j<end; j++){
+//         word[j]= input[j];
+//     }
+//     for(int j=0; j<128; j++){
+//         asci_word[j]= 0;
+//         asci_str[j]= 0;
+//     }
+//     for(int j=0; j<end; j++){
+//         asci_word[word[j]]++;
+//     }
+//     while(input[i] != '~'){
+//         int start=i;
+//         for(i; i<LEN_ARRAY; i++){
+//             if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
+//                 break;
+//             }
+//         }
+//         for(start; start<LEN_ARRAY; start++){
+//             for(int dest=start; dest<LEN_ARRAY; dest++){
+//                 if(input[dest] == '\n' || input[dest] == '\t' || input[dest] == ' '){
+//                     continue;
+//                 }
+//                 if(asci_word[input[dest] == 0]){
+//                     for(int j=0; j<128; j++){
+//                         if(asci_word[j] != asci_str[j]){
+//                             for(int k=0; k<128; k++){
+//                                 asci_str[k] = 0;
+//                             }
+//                             break;
+//                         }
+//                     }
+//                     if(boll == 0){
+//                         boll == 1;
+//                     }
+//                     print(start, dest-1, boll);
+//                 }   
+//                 else{
+//                     if(asci_str[input[dest]] < asci_word[input[dest]]){
+//                         asci_str[input[dest]]++;
+//                     }
+//                     else{
+//                         for(int j=0; j<128; j++){
+//                         if(asci_word[j] != asci_str[j]){
+//                             for(int k=0; k<128; k++){
+//                                 asci_str[k] = 0;
+//                             }
+//                             break;
+//                         }
+//                     }
+//                     if(boll == 0){
+//                         boll == 1;
+//                     }
+//                     print(start, dest-1, boll);
+//                     }
+//                 }
+//             }
+//         }
+//         if(input[i] == '~'){
+//             break;
+//         }
+//         i++;
+//     }
+// }
+
+void angram(int end, int src){
+
+}
+
+void insert(){
     char c;
     int i=0;
     while ( i<(WORD+TXT) && input[i-1] != '~'){
@@ -180,14 +266,20 @@ int main(){
         input[i]= c;
         i++;
     }
+}
+
+
+int main(){   
     // i=0;
     // while ( i<(WORD+TXT)){
     //     printf("%c", input[i]);
     //     i++;
     // }
+    insert();
     int index= endOfWord();
     int gim= gimatria(0, index-1);
     sameGim(index+1 , gim);
     atbash(index, index+1);
+    angram(index, index+1);
     return 0;
 }
