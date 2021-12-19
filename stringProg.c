@@ -4,7 +4,6 @@
 #define LEN_ARRAY (TXT+WORD)
 
 char input[LEN_ARRAY];
-// char atbash[WORD];
 
 int gimatria(int src, int dest){
     int sum=0;
@@ -53,7 +52,7 @@ void sameGim(int src, int gim){
                     continue;
                 }
                 if(input[end] == ' ' || input[end] == '\n' || input[end] == '\t'){
-                        continue;
+                    continue;
                     }
                 sum= gimatria(start, end);
                 if(sum > gim){
@@ -163,7 +162,7 @@ void atbash(int end, int src){
                 }
             }
             else if(input[start] == ' '){
-                continue; //ask if need to print the space
+                continue; 
             }
         }
         if(input[i] == '~'){
@@ -183,79 +182,79 @@ void print(int src, int dest, int boll){
     }
 }
 
-// void angram(int end, int src){
-//     char word[end];
-//     int asci_word[128];
-//     int asci_str[128];
-//     int i=src;
-//     int boll= 0;
-//     printf("Anagram Sequences: ");
-//     for(int j=0; j<end; j++){
-//         word[j]= input[j];
-//     }
-//     for(int j=0; j<128; j++){
-//         asci_word[j]= 0;
-//         asci_str[j]= 0;
-//     }
-//     for(int j=0; j<end; j++){
-//         asci_word[word[j]]++;
-//     }
-//     while(input[i] != '~'){
-//         int start=i;
-//         for(i; i<LEN_ARRAY; i++){
-//             if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
-//                 break;
-//             }
-//         }
-//         for(start; start<LEN_ARRAY; start++){
-//             for(int dest=start; dest<LEN_ARRAY; dest++){
-//                 if(input[dest] == '\n' || input[dest] == '\t' || input[dest] == ' '){
-//                     continue;
-//                 }
-//                 if(asci_word[input[dest] == 0]){
-//                     for(int j=0; j<128; j++){
-//                         if(asci_word[j] != asci_str[j]){
-//                             for(int k=0; k<128; k++){
-//                                 asci_str[k] = 0;
-//                             }
-//                             break;
-//                         }
-//                     }
-//                     if(boll == 0){
-//                         boll == 1;
-//                     }
-//                     print(start, dest-1, boll);
-//                 }   
-//                 else{
-//                     if(asci_str[input[dest]] < asci_word[input[dest]]){
-//                         asci_str[input[dest]]++;
-//                     }
-//                     else{
-//                         for(int j=0; j<128; j++){
-//                         if(asci_word[j] != asci_str[j]){
-//                             for(int k=0; k<128; k++){
-//                                 asci_str[k] = 0;
-//                             }
-//                             break;
-//                         }
-//                     }
-//                     if(boll == 0){
-//                         boll == 1;
-//                     }
-//                     print(start, dest-1, boll);
-//                     }
-//                 }
-//             }
-//         }
-//         if(input[i] == '~'){
-//             break;
-//         }
-//         i++;
-//     }
-// }
+int charAt(char c, char arr[], int len, int count[]){
+    for(int i=0; i<len; i++){
+        if(c == arr[i] && count[i] == 0) return i;
+    }
+    return -1;
+}
+
+//check if this right.
+void restart(int count[], int len){
+    for(int i= 0; i<len; i++){
+        count[i]= 0;
+    }
+}
+
+int thisAnagram(int count[], int len){
+    for(int i=0; i<len; i++){
+        if(count[i] != 1) return 0;
+    }
+    return 1;
+}
 
 void angram(int end, int src){
-
+    char word[end];
+    int counter[end];
+    int boll= 0;
+    while(input[src] == '\n' || input[src] == '\t' || input[src] == ' '){
+        src++;
+    }
+    int i= src;
+    printf("Anagram Sequences: ");
+    restart(counter, end);
+    for(int j=0; j<end; j++){
+        word[j]= input[j];
+    }
+    while(input[i] != '~'){
+        int start=i;
+        for(i; i<LEN_ARRAY; i++){
+            if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
+                break;
+            }
+        }
+        for(int pointer= start; pointer<LEN_ARRAY;  pointer++){
+            int contain= charAt(input[pointer], word, end, counter);
+            if(input[pointer] == '\n' || input[pointer] == '\t' || input[pointer] == ' '){
+                continue;
+            }
+            else if(contain != -1){
+                counter[contain]++;
+            }
+            else{
+                int ans= thisAnagram(counter, end);
+                if(ans == 1){
+                    if(boll == 1){
+                            printf("~");
+                    }
+                    if(boll == 0){
+                            boll = 1;
+                    }
+                    for(start; start<pointer; start++){
+                        printf("%c", input[start]);
+                    }
+                }
+                restart(counter, end);
+                pointer= start;
+                start++;
+                if(start == i) break;
+            }
+        }
+        if(input[i] == '~'){
+            break;
+        }
+        i++;
+    }
 }
 
 void insert(){
@@ -270,11 +269,6 @@ void insert(){
 
 
 int main(){   
-    // i=0;
-    // while ( i<(WORD+TXT)){
-    //     printf("%c", input[i]);
-    //     i++;
-    // }
     insert();
     int index= endOfWord();
     int gim= gimatria(0, index-1);
