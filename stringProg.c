@@ -173,15 +173,6 @@ void atbash(int end, int src){
     printf("\n");   
 }
 
-// void print(int src, int dest, int boll){
-//     if(boll == 1){
-//         printf("~");
-//     }
-//     for(int i=src; i<=dest; i++){
-//         printf("%c", input[i]);
-//     }
-// }
-
 int charAt(char c, char arr[], int len, int count[]){
     for(int i=0; i<len; i++){
         if(c == arr[i] && count[i] == 0) return i;
@@ -189,7 +180,6 @@ int charAt(char c, char arr[], int len, int count[]){
     return -1;
 }
 
-//check if this right.
 void restart(int count[], int len){
     for(int i= 0; i<len; i++){
         count[i]= 0;
@@ -270,27 +260,10 @@ void angram(int end, int src){
 void insert(){
     char c;
     int i=0;
-    // int count= 0;
     while (i<(WORD+TXT) && input[i-1] != '~'){
         scanf("%c", &c);
-        // if(input[i-1] == '~') {
-        //     count=1;
-        // }
-        // if(count > 0){
-        //     continue;
-        // } 
         input[i]= c;
         i++;
     }
 }
-
-// int main(){   
-//     insert();
-//     int index= endOfWord();
-//     int gim= gimatria(0, index-1);
-//     sameGim(index+1 , gim);
-//     atbash(index, index+1);
-//     angram(index, index+1);
-//     return 0;
-// }
 
