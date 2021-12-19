@@ -38,12 +38,12 @@ void sameGim(int src, int gim){
     printf("Gematria Sequences: ");
     while(input[i] != '~'){
         int start=i;
-        for(i; i<LEN_ARRAY; i++){
+        for(; i<LEN_ARRAY; i++){
             if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
                 break;
             }
         }
-        for(start; start<i; start++){
+        for(; start<i; start++){
             for(int end=start; end<LEN_ARRAY; end++){
                 if(input[start]<65 || (input[start]>90 && input[start]<97) || input[start] > 122){
                     continue;
@@ -107,12 +107,12 @@ void atbash(int end, int src){
     }
     while(input[i] != '~'){
         int start=i;
-        for(i; i<LEN_ARRAY; i++){
+        for(; i<LEN_ARRAY; i++){
             if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
                 break;
             }
         }
-        for(start; start<i; start++){
+        for(; start<i; start++){
             if(input[start] == word[0]){
                 pointer= 1;
                 for(int sub=start+1; sub<LEN_ARRAY; sub++){
@@ -130,7 +130,7 @@ void atbash(int end, int src){
                             if(boll == 0){
                                 boll = 1;
                             }
-                        for(start; start<=sub; start++){
+                        for(; start<=sub; start++){
                             printf("%c" ,input[start]);
                         }
                         break;
@@ -154,7 +154,7 @@ void atbash(int end, int src){
                         if(boll == 0){
                             boll = 1;
                         }
-                        for(start; start<=sub; start++){
+                        for(; start<=sub; start++){
                             printf("%c" ,input[start]);
                         }
                         break;
@@ -173,14 +173,14 @@ void atbash(int end, int src){
     printf("\n");   
 }
 
-void print(int src, int dest, int boll){
-    if(boll == 1){
-        printf("~");
-    }
-    for(int i=src; i<=dest; i++){
-        printf("%c", input[i]);
-    }
-}
+// void print(int src, int dest, int boll){
+//     if(boll == 1){
+//         printf("~");
+//     }
+//     for(int i=src; i<=dest; i++){
+//         printf("%c", input[i]);
+//     }
+// }
 
 int charAt(char c, char arr[], int len, int count[]){
     for(int i=0; i<len; i++){
@@ -218,12 +218,15 @@ void angram(int end, int src){
     }
     while(input[i] != '~'){
         int start=i;
-        for(i; i<LEN_ARRAY; i++){
+        for(; i<LEN_ARRAY; i++){
             if(input[i] == '\n' || input[i] == '\t' || input[i] == ' ' || input[i] == '~'){
                 break;
             }
         }
         for(int pointer= start; pointer<LEN_ARRAY;  pointer++){
+            if(input[start] == '\n' || input[start] == '\t' || input[start] == ' '){
+                break;
+            }
             int contain= charAt(input[pointer], word, end, counter);
             if(input[pointer] == '\n' || input[pointer] == '\t' || input[pointer] == ' '){
                 continue;
@@ -240,8 +243,15 @@ void angram(int end, int src){
                     if(boll == 0){
                             boll = 1;
                     }
-                    for(start; start<pointer; start++){
-                        printf("%c", input[start]);
+                    if(input[pointer-1] == '\n' || input[pointer-1] == '\t' || input[pointer-1] == ' '){
+                        for(; start<pointer-1; start++){
+                            printf("%c", input[start]);
+                        }
+                    }
+                    else{
+                        for(; start<pointer; start++){
+                            printf("%c", input[start]);
+                        }
                     }
                 }
                 restart(counter, end);
@@ -260,20 +270,27 @@ void angram(int end, int src){
 void insert(){
     char c;
     int i=0;
-    while ( i<(WORD+TXT) && input[i-1] != '~'){
+    // int count= 0;
+    while (i<(WORD+TXT) && input[i-1] != '~'){
         scanf("%c", &c);
+        // if(input[i-1] == '~') {
+        //     count=1;
+        // }
+        // if(count > 0){
+        //     continue;
+        // } 
         input[i]= c;
         i++;
     }
 }
 
+// int main(){   
+//     insert();
+//     int index= endOfWord();
+//     int gim= gimatria(0, index-1);
+//     sameGim(index+1 , gim);
+//     atbash(index, index+1);
+//     angram(index, index+1);
+//     return 0;
+// }
 
-int main(){   
-    insert();
-    int index= endOfWord();
-    int gim= gimatria(0, index-1);
-    sameGim(index+1 , gim);
-    atbash(index, index+1);
-    angram(index, index+1);
-    return 0;
-}
