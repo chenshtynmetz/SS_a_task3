@@ -140,7 +140,7 @@ void atbash(int end, int src){
             else if(input[start] == word[end-1]){
                     pointer= end-2;
                 for(int sub=start+1; sub<i; sub++){
-                    if(input[sub] == ' ' || input[sub] == '\n' || input[sub] == '\t'){
+                    if(input[sub]== ' ' || input[sub] == '\n' || input[sub] == '\t'){
                         continue;
                     }
                     if(input[sub] != word[pointer]){
